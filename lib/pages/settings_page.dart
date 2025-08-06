@@ -38,23 +38,23 @@ class SettingsPage extends GetView<AppController> {
               ListTile(
                 title: Text("主题颜色"),
                 trailing: Obx(
-                  () => SegmentedButton(
-                    segments: Colors.primaries
-                        .map(
-                          (c) => ButtonSegment(
-                            value: c,
-                            label: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 4.0,
-                              ),
-                              child: Container(width: 16, height: 16, color: c),
+                  () => OverflowBar(
+                    children: [
+                      for (final color in Colors.primaries)
+                        GestureDetector(
+                          onTap: () {
+                            controller.setThemeColor(color);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Container(
+                              width: 16,
+                              height: 16,
+                              color: color,
                             ),
                           ),
-                        )
-                        .toList(),
-                    selected: {controller.themeColor.value},
-                    onSelectionChanged: (v) =>
-                        controller.setThemeColor(v.first),
+                        ),
+                    ],
                   ),
                 ),
               ),
