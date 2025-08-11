@@ -20,15 +20,18 @@ class MainApp extends GetView<AppController> {
 
   @override
   Widget build(BuildContext context) {
-    TextScaler.linear(2);
     return Obx(
       () => GetMaterialApp(
         builder: (context, child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaler: TextScaler.linear(1), // 固定缩放比例
+          return Obx(
+            () => MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.linear(
+                  controller.textScaler.value,
+                ), // 固定缩放比例
+              ),
+              child: child!,
             ),
-            child: child!,
           );
         },
         theme: _buildTheme(Brightness.light, controller.themeColor.value),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_starter/defs.dart';
 import 'package:get/get.dart';
 
 import '../controllers/app_controller.dart';
@@ -18,43 +19,52 @@ class SettingsPage extends GetView<AppController> {
             children: [
               ListTile(
                 title: Text("主题模式"),
-                trailing: Obx(
-                  () => SegmentedButton(
-                    segments: [
-                      ButtonSegment(
-                        value: ThemeMode.system,
-                        label: Text("跟随系统"),
-                      ),
-                      ButtonSegment(value: ThemeMode.light, label: Text("浅色")),
-                      ButtonSegment(value: ThemeMode.dark, label: Text("暗黑")),
-                    ],
-                    selected: {controller.themeMode.value},
-                    onSelectionChanged: (value) {
-                      controller.setThemeMode(value.first);
-                    },
-                  ),
+                trailing: DropdownMenu(
+                  onSelected: (value) {
+                    controller.setThemeMode(value ?? ThemeMode.system);
+                  },
+                  initialSelection: controller.themeMode.value,
+                  dropdownMenuEntries: [
+                    DropdownMenuEntry(value: ThemeMode.light, label: "Light"),
+                    DropdownMenuEntry(value: ThemeMode.dark, label: "Dark"),
+                    DropdownMenuEntry(value: ThemeMode.system, label: "System"),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              ListTile(
+                title: Text("主题颜色"),
+                trailing: DropdownMenu(
+                  onSelected: (value) {
+                    controller.setThemeColor(value ?? Colors.blue);
+                  },
+                  initialSelection: controller.themeColor.value,
+                  dropdownMenuEntries: Colors.primaries.map((e) {
+                    final colorName =
+                        primaryColorNames[Colors.primaries.indexOf(e)];
+                    return DropdownMenuEntry(
+                      value: e,
+                      label: colorName,
+                      labelWidget: Text(colorName, style: TextStyle(color: e)),
+                    );
+                  }).toList(),
                 ),
               ),
               ListTile(
-                title: Text("主题颜色"),
-                trailing: Obx(
-                  () => OverflowBar(
-                    children: [
-                      for (final color in Colors.primaries)
-                        GestureDetector(
-                          onTap: () {
-                            controller.setThemeColor(color);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              width: 16,
-                              height: 16,
-                              color: color,
-                            ),
-                          ),
-                        ),
-                    ],
+                title: Text("文字缩放（重启后生效）"),
+                trailing: SizedBox(
+                  width: 200,
+                  child: Obx(
+                    () => Slider(
+                      value: controller.textScaler.value,
+                      min: 0.8,
+                      max: 1.2,
+                      divisions: 10,
+                      label: "${controller.textScaler.value}",
+                      onChanged: (value) {
+                        controller.setTextScaler(value);
+                      },
+                    ),
                   ),
                 ),
               ),
