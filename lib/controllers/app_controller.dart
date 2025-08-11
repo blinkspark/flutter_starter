@@ -44,7 +44,6 @@ class AppController extends GetxController {
   final Rx<double> textScaler = 1.0.obs;
   void setTextScaler(double scaler) {
     textScaler.value = scaler;
-    print("new scaler" + scaler.toString());
     sp.setDouble("app.text_scaler", scaler);
   }
 }
