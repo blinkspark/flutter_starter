@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/defs.dart';
 import 'package:get/get.dart';
 
+import '../defs.dart';
 import '../controllers/app_controller.dart';
 import '../utils.dart';
 
